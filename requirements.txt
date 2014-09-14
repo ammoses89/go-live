@@ -3,3 +3,4 @@ requests
 ujson
 pymongo
 nose
+gevent
