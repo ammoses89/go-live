@@ -46,7 +46,7 @@ class Releases(object):
      def query(cls, params_dict):
          db = mongo.get_db()
          results = db.releases.find(params_dict)
-         print results
+         print "%s results queried" % (results.count())
          releases = []
          for result in results:
             result.pop('_id')

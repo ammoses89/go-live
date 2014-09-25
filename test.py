@@ -24,6 +24,14 @@ def testSpotifyLookup():
     response = lookup.spotify()
     assert response['albums']['total'] == 1
 
+def testRdioLookup():
+    """ Testing Rdio Lookup"""
+    upc = "884502232769"
+    lookup = Lookup(upc)
+    response = lookup.rdio()
+    print response
+    assert response[0]['length'] == 11
+
 @with_setup(clear_db, None)
 def testAReleaseInsert():
     """ Testing Inserting Release"""
@@ -46,7 +54,7 @@ def testReleasesQuery():
     upc = "840218148053"
     params = {"is_up": False}
     releases = Releases.query(params)
-    assert len(releases) > 1
+    assert len(releases) >= 1
 
     release = releases[0]
     assert release.upc == upc

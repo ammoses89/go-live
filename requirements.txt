@@ -4,3 +4,4 @@ ujson
 pymongo
 nose
 gevent
+oauth2
