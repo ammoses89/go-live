@@ -1,0 +1,15 @@
+{
+	"folders":
+	[
+		{
+			"path": "."
+		},
+	],
+  "build_systems":
+    [
+      {
+        "name": "Go Live Test",
+        "cmd": ["/usr/local/bin/nosetests", "-v", "-x"]
+      }
+    ]
+}

@@ -13,24 +13,32 @@ def clear_db():
 def testItunesLookup():
     """ Testing iTunes Lookup"""
     upc = "840218148053"
-    lookup = Lookup(upc)
+    lookup = Lookup(upc=upc)
     response = lookup.itunes()
     assert response['resultCount'] == 1
 
 def testSpotifyLookup():
     """ Testing Spotify Lookup"""
     upc = "840218148053"
-    lookup = Lookup(upc)
+    lookup = Lookup(upc=upc)
     response = lookup.spotify()
     assert response['albums']['total'] == 1
 
 def testRdioLookup():
     """ Testing Rdio Lookup"""
     upc = "884502232769"
-    lookup = Lookup(upc)
+    lookup = Lookup(upc=upc)
     response = lookup.rdio()
     print response
     assert response[0]['length'] == 11
+
+def testAmazonLookup():
+    """ Testing Amazon Lookup"""
+    title = "You Forgot It In People"
+    artist = "Broken Social Scene"
+    lookup = Lookup(title=title, artist=artist)
+    response = lookup.amazon()
+    assert response
 
 @with_setup(clear_db, None)
 def testAReleaseInsert():

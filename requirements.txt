@@ -5,3 +5,4 @@ pymongo
 nose
 gevent
 oauth2
+beautifulsoup4
