@@ -11,9 +11,7 @@ def index():
     """
     Return Basic API Info in this response
     """
-    return ujson.dumps({
-      "message": "Welcome to GoLive API"
-    })
+    return app.send_static_file('index.html')
 
 @app.route("/add")
 def add():

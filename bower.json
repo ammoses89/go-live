@@ -1,0 +1,25 @@
+{
+  "name": "go-live",
+  "version": "0.0.0",
+  "homepage": "https://github.com/ammoses89/go-live",
+  "authors": [
+    "Adrian Moses <ammoses89@gmail.com>"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "static/components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.3",
+    "angular": "~1.3.8",
+    "angular-route": "~1.3.8",
+    "skeleton": "~2.0.4",
+    "less": "~2.1.2"
+  }
+}
