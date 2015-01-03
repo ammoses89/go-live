@@ -1,0 +1,31 @@
+/* Nav */
+.padded {
+  padding: 5px;
+}
+.green {
+  color: LimeGreen;
+}
+.red {
+  color: #ff0000;
+}
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 20px 0 0 0;
+  border-bottom: 2px solid #eee;
+}
+.nav-list {
+  float: right;
+  list-style-type: none;
+  padding: 5px;
+}
+.nav-list > li {
+  display: inline;
+  padding: 5px;
+}
+.nav-list > li > a {
+  text-decoration: none;
+  color: #222;
+}

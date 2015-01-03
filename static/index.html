@@ -21,6 +21,7 @@
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <link rel="stylesheet" href="/static/components/skeleton/css/normalize.css">
   <link rel="stylesheet" href="/static/components/skeleton/css/skeleton.css">
+  <link rel="stylesheet" href="/static/css/main.css">
 
   <!-- Favicon
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
@@ -28,6 +29,22 @@
 
 </head>
 <body ng-app="goLive">
+
+  <nav class="navbar">
+    <div class="container">
+      <ul class="nav-list">
+        <li>
+          <a href="#/home">Is it live?</a>
+        </li>
+        <li>
+          <a href="#/notify">Notify Me</a>
+        </li>
+        <li>
+          <a href="#/api">API</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
 
   <!-- Primary Page Layout
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
@@ -41,5 +58,9 @@
   <script src="/static/components/angular-route/angular-route.min.js"></script>
   <script src="/static/js/app.js"></script>
   <script src="/static/js/controllers/home.js"></script>
+  <script src="/static/js/controllers/notify.js"></script>
+  <script src="/static/js/controllers/api.js"></script>
+  <script src="/static/js/controllers/status.js"></script>
+  <script src="/static/js/services/live.js"></script>
 </body>
 </html>

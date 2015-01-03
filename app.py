@@ -1,6 +1,7 @@
-from flask import Flask
+from flask import Flask, request
 
 import gl
+from gl.lookup import Lookup
 import ujson
 
 app = Flask(__name__)
@@ -25,17 +26,24 @@ def add():
     """
     pass
 
-@app.route("/check_status/<upc>")
-def check_status(upc):
+@app.route("/check_status", methods=["POST"])
+def check_status():
     """
     This will check status for upc
     although the person should be notified by email
 
     Possible feature: count of times upc has been checked
     """
-    pass
+    request_data = ujson.loads(request.data)
+    distributor = request_data.pop('distributor', False)
+    assert distributor, "No distributor provided"
+    results = Lookup.lookup_by_distributor(distributor, **request_data)
+    return ujson.dumps({
+        'status': 'OK',
+        'results': results
+        })
 
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
