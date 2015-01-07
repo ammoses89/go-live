@@ -50,7 +50,6 @@ class Lookup(object):
                                 params={"upc": self.upc})
         if response.status_code == 200:
             results = ujson.loads(response.text)
-            print results
             if results['results']:
                 link = results['results'][0]['collectionViewUrl']
                 return self.result_found('iTunes', link)
@@ -100,10 +99,8 @@ class Lookup(object):
         keyword = keyword_gen(title, artist)
 
         url = AMAZON_BASE_URL + keyword
-        print url
         response = requests.get(AMAZON_BASE_URL + keyword)
 
-        print response.status_code
         if response.status_code == 200:
             soup = BeautifulSoup(response.text)
             div_elements = soup.find_all('div', class_="mp3Cell")
