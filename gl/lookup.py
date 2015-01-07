@@ -4,6 +4,7 @@ import ujson
 import oauth2 as oauth
 import urllib
 from bs4 import BeautifulSoup
+import json
 
 from settings import CONSUMER_KEY, CONSUMER_SECRET
 
@@ -130,5 +131,5 @@ if __name__ == '__main__':
         upc = sys.argv[2]
         lookup = Lookup(upc)
     dsp_lookup = getattr(lookup, dsp.lower())
-    print dsp_lookup()
+    print json.dumps(dsp_lookup(), indent=4, separators=(',', ':'))
 
