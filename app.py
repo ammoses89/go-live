@@ -2,7 +2,7 @@ from flask import Flask, request
 
 import gl
 from gl.lookup import Lookup
-import ujson
+import json
 
 app = Flask(__name__)
 
@@ -34,11 +34,11 @@ def check_status():
 
     Possible feature: count of times upc has been checked
     """
-    request_data = ujson.loads(request.data)
+    request_data = json.loads(request.data)
     distributor = request_data.pop('distributor', False)
     assert distributor, "No distributor provided"
     results = Lookup.lookup_by_distributor(distributor, **request_data)
-    return ujson.dumps({
+    return json.dumps({
         'status': 'OK',
         'results': results
         })

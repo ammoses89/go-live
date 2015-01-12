@@ -1,6 +1,5 @@
 import sys
 import requests
-import ujson
 import oauth2 as oauth
 import urllib
 from bs4 import BeautifulSoup
@@ -50,7 +49,7 @@ class Lookup(object):
         response = requests.get(ITUNES_BASE_URL,
                                 params={"upc": self.upc})
         if response.status_code == 200:
-            results = ujson.loads(response.text)
+            results = json.loads(response.text)
             if results['results']:
                 link = results['results'][0]['collectionViewUrl']
                 return self.result_found('iTunes', link)
@@ -64,7 +63,7 @@ class Lookup(object):
                                 params={"q": "upc:"+self.upc,
                                         "type": "album"})
         if response.status_code == 200:
-            results = ujson.loads(response.text)
+            results = json.loads(response.text)
             if results['albums']['items']:
                 item = results['albums']['items'][0]
                 link = item['external_urls']['spotify']
@@ -82,7 +81,7 @@ class Lookup(object):
                                   urllib.urlencode(
                                     {'method': 'getAlbumsByUPC',
                                      'upc': self.upc}))
-        response = ujson.loads(response[1])
+        response = json.loads(response[1])
         if response["status"] == "ok":
             results = response["result"]
             if results:
