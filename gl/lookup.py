@@ -68,8 +68,6 @@ class Lookup(object):
                 item = results['albums']['items'][0]
                 link = item['external_urls']['spotify']
                 return self.result_found('Spotify', link)
-            else:
-                return results
 
         return self.result_not_found('Spotify')
 

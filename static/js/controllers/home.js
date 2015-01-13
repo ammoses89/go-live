@@ -2,10 +2,10 @@ angular.module('goLive.controllers')
     .controller('HomeController', ['$scope', '$location', 'LiveService', function($scope, $location, LiveService){
 
         $scope.album = {
-            'title': 'VF',
-            'upc': '884502232769',
-            'artist': 'Vintage Fresh',
-            'distributor': 'itunes'
+            'title': '',
+            'upc': '',
+            'artist': '',
+            'distributor': 'spotify'
         };
 
         $scope.checkStatus = function(album) {

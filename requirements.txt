@@ -1,5 +1,5 @@
 flask
-requests
+requests==2.1.0
 ujson
 pymongo
 nose
