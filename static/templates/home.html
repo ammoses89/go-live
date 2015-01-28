@@ -12,20 +12,27 @@
               <input class="u-full-width" type="email" placeholder="test@mailbox.com" id="email">
             </div>-->
             <div class="six columns">
-              <label for="upc">Album upc</label>
+              <label for="upc">Album upc
+              <span ng-class="required.upc ? 'show_required' : 'hide_required'">Required</span>
+              </label>
               <input class="u-full-width" ng-model="album.upc" type="text" placeholder="8109345998" id="upc">
             </div>
             <div class="six columns">
-              <label for="artist">Album Artist</label>
+              <label for="artist">Album Artist
+              <span ng-class="required.artist ? 'show_required' : 'hide_required'">Required</span>
+              </label>
               <input class="u-full-width" ng-model="album.artist" type="text" placeholder="Disasterpiece" id="artist">
             </div>
             <div class="twelve columns">
-              <label for="title">Album title</label>
+              <label for="title">Album title
+              <span ng-class="required.title ? 'show_required' : 'hide_required'">Required</span>
+              </label>
               <input class="u-full-width" ng-model="album.title" type="text" placeholder="Star Wars Medley" id="title">
             </div>
             <div class="twelve columns">
               <label for="distributor">Distributor</label>
-              <select ng-model="album.distributor" class="u-full-width" id="distributor">
+              <span class="is-required"></span>
+              <select ng-model="album.distributor" ng-change="checkRequiredValues(album.distributor)" class="u-full-width" id="distributor">
                 <option value="spotify">Spotify</option>
                 <option value="rdio">Rdio</option>
                 <option value="itunes">iTunes</option>

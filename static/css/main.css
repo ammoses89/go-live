@@ -29,3 +29,10 @@
   text-decoration: none;
   color: #222;
 }
+.show_required {
+  color: red;
+  display: inline;
+}
+.hide_required {
+  display: none;
+}
