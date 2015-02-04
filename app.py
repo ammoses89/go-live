@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, redirect
 
 import gl
 from gl.lookup import Lookup
@@ -6,6 +6,15 @@ import json
 
 app = Flask(__name__)
 
+def dict_to_qs(_d):
+    qs = ''
+    for i, (k, v) in enumerate(_d.iteritems()):
+        if i == 0:
+            qs += '?'
+        else:
+            qs += '&'
+        qs += '%s=%s' % (k, v)
+    return qs
 
 @app.route("/")
 def index():
@@ -26,7 +35,7 @@ def add():
     """
     pass
 
-@app.route("/check_status", methods=["POST"])
+@app.route("/check_status", methods=["GET", "POST"])
 def check_status():
     """
     This will check status for upc
@@ -34,15 +43,22 @@ def check_status():
 
     Possible feature: count of times upc has been checked
     """
-    request_data = json.loads(request.data)
-    distributor = request_data.pop('distributor', False)
-    assert distributor, "No distributor provided"
-    results = Lookup.lookup_by_distributor(distributor, **request_data)
-    return json.dumps({
-        'status': 'OK',
-        'results': results
-        })
 
+    if request.method == "POST":
+        request_data = json.loads(request.data)
+        distributor = request_data.pop('distributor', False)
+        assert distributor, "No distributor provided"
+        results = Lookup.lookup_by_distributor(distributor, **request_data)
+        return json.dumps({
+            'status': 'OK',
+            'results': results
+            })
+    else:
+        request_data = dict(request.args.items())
+        distributor = request_data.pop('distributor', False)
+        assert distributor, "No distributor provided"
+        results = Lookup.lookup_by_distributor(distributor, **request_data)
+        return redirect('/#/status/?%s' % (dict_to_qs(results)))
 
 
 if __name__ == '__main__':
