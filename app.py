@@ -35,7 +35,7 @@ def add():
     """
     pass
 
-@app.route("/check_status", methods=["GET", "POST"])
+@app.route("/check_status", methods=["POST"])
 def check_status():
     """
     This will check status for upc
@@ -44,22 +44,23 @@ def check_status():
     Possible feature: count of times upc has been checked
     """
 
-    if request.method == "POST":
-        request_data = json.loads(request.data)
-        distributor = request_data.pop('distributor', False)
-        assert distributor, "No distributor provided"
-        results = Lookup.lookup_by_distributor(distributor, **request_data)
-        return json.dumps({
-            'status': 'OK',
-            'results': results
-            })
-    else:
-        request_data = dict(request.args.items())
-        distributor = request_data.pop('distributor', False)
-        assert distributor, "No distributor provided"
-        results = Lookup.lookup_by_distributor(distributor, **request_data)
-        return redirect('/#/status/?%s' % (dict_to_qs(results)))
+    request_data = json.loads(request.data)
+    distributor = request_data.pop('distributor', False)
+    assert distributor, "No distributor provided"
+    results = Lookup.lookup_by_distributor(distributor, **request_data)
+    return json.dumps({
+        'status': 'OK',
+        'results': results
+        })
 
+
+@app.route("/api/<distributor>/<upc>")
+def check_is_live(distributor, upc):
+    """
+    Amazon not supported on this endpoint
+    """
+    results = Lookup.lookup_by_distributor(distributor, upc=upc)
+    return json.dumps(results)
 
 if __name__ == '__main__':
     app.run(debug=True)
