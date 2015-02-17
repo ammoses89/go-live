@@ -54,12 +54,27 @@ def check_status():
         })
 
 
-@app.route("/api/<distributor>/<upc>")
-def check_is_live(distributor, upc):
+@app.route("/api/<distributor>")
+def check_is_live(distributor):
     """
     Amazon not supported on this endpoint
     """
-    results = Lookup.lookup_by_distributor(distributor, upc=upc)
+    upc = request.args.get('upc')
+    artist = request.args.get('artist')
+    album_title = request.args.get('album_title')
+
+    distributor = distributor.lower()
+
+    if distributor == 'amazon':
+        if not artist or not album_title:
+            return json.dumps({
+                'status': 'error',
+                'message': 'Amazon lookup requires both artist and album title'
+                })
+
+    results = Lookup.lookup_by_distributor(distributor, upc=upc, artist=artist,
+        title=album_title)
+
     return json.dumps(results)
 
 if __name__ == '__main__':
