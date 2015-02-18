@@ -2,6 +2,9 @@
 .padded {
   padding: 5px;
 }
+.nav-container {
+  height: 80px;
+}
 .green {
   color: LimeGreen;
 }
@@ -35,4 +38,7 @@
 }
 .hide_required {
   display: none;
+}
+.main-container {
+  margin-top: 40px;
 }
