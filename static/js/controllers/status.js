@@ -9,8 +9,8 @@ angular.module('goLive.controllers')
 
         $scope.getStatus = function() {
             var results = LiveService.getStatus()
-            if(results && typeof results === 'object' && results.results){
-                $scope.results = results.results;
+            if(results && typeof results === 'object'){
+                $scope.results = results;
             }
         };
 

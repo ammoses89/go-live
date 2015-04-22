@@ -5,11 +5,9 @@ angular.module('goLive.services')
         return {
             checkStatus: function(opts) {
                 var distro = opts.distributor;
-                console.log(distro);
                 delete opts.distributor;
                 var deferred = $q.defer();
                 albumResults = null;
-                console.log(opts);
                 $http.get('/api/' + distro, {params: opts})
                     .success(function(response){
                         albumResults = response;

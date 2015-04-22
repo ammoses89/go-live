@@ -65,7 +65,7 @@ def check_is_live(distributor):
 
     distributor = distributor.lower()
 
-    if distributor == 'amazon':
+    if distributor in ['amazon', 'deezer', 'google']:
         if not artist or not album_title:
             return json.dumps({
                 'status': 'error',
@@ -74,6 +74,7 @@ def check_is_live(distributor):
 
     results = Lookup.lookup_by_distributor(distributor, upc=upc, artist=artist,
         title=album_title)
+    print "Results:", results
 
     return json.dumps(results)
 

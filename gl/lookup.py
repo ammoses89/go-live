@@ -11,6 +11,8 @@ ITUNES_BASE_URL = "http://itunes.apple.com/lookup"
 SPOTIFY_BASE_URL = "https://api.spotify.com/v1/search"
 RDIO_BASE_URL = "http://api.rdio.com/1/"
 AMAZON_BASE_URL = "http://www.amazon.com/s/ref=nb_sb_noss?url=search-alias%3Ddigital-music&field-keywords="
+DEEZER_BASE_URL = "http://api.deezer.com/search/album?q="
+GOOGLE_BASE_URL = "https://play.google.com/store/search?q=%s&c=music"
 
 def keyword_gen(*args):
     keywords = []
@@ -97,7 +99,7 @@ class Lookup(object):
         keyword = keyword_gen(title, artist)
 
         url = AMAZON_BASE_URL + keyword
-        response = requests.get(AMAZON_BASE_URL + keyword)
+        response = requests.get(url)
 
         if response.status_code == 200:
             soup = BeautifulSoup(response.text)
@@ -107,6 +109,48 @@ class Lookup(object):
                 a = div.find_all('a')[0]
                 return self.result_found('Amazon', a['href'])
         return self.result_not_found('Amazon')
+
+    def deezer(self):
+        title = self.title or ''
+        artist = self.artist or ''
+
+        query = artist + " " + title
+
+        url = DEEZER_BASE_URL + query
+        response = requests.get(url)
+
+
+        if response.status_code == 200:
+           res_dict = response.json()
+           if res_dict['data']:
+                link = res_dict['data'][0]['link']
+                return self.result_found('Deezer', link)
+
+        return self.result_not_found('Deezer')
+
+    def google(self):
+        title = self.title or ''
+        artist = self.artist or ''
+
+        query = artist + " " + title
+
+        url = GOOGLE_BASE_URL % query
+        response = requests.get(url)
+
+        if response.status_code == 200:
+            soup = BeautifulSoup(response.text)
+            headings = soup.find_all('h1', class_='cluster-heading')
+            for heading in headings:
+                title_links = heading.find_all('a', class_='title-link')
+                for title_link in title_links:
+                    if title_link.text.lower() == 'albums':
+                        div = heading.find_next_sibling('div')
+                        if div:
+                            a = div.find_all('a', class_='title')[0]
+                            link = "https://play.google.com" + a['href']
+                            return self.result_found('Google Play', link)
+        return self.result_not_found('Google Play')
+
 
     @classmethod
     def lookup_by_distributor(cls, distributor, **kwargs):

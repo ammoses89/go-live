@@ -1,14 +1,12 @@
 import nose
 from nose.tools import with_setup
 
-from gl.db import mongo
 from gl.lookup import Lookup
-from gl.release import Release, Releases
+# from gl.db import mongo
+# from gl.release import Release, Releases
 
 import datetime
 
-def clear_db():
-    Releases.clear()
 
 def testItunesLookup():
     """ Testing iTunes Lookup"""
@@ -40,29 +38,48 @@ def testAmazonLookup():
     response = lookup.amazon()
     assert response
 
-@with_setup(clear_db, None)
-def testAReleaseInsert():
-    """ Testing Inserting Release"""
-    params = {
-      "upc": "840218148053",
-      "created_at": datetime.datetime.now(),
-      "updated_at": datetime.datetime.now(),
-      "is_up": False
-    }
+def testDeezerLookup():
+    """ Testing Deezer Lookup"""
+    title = "You Forgot It In People"
+    artist = "Broken Social Scene"
+    lookup = Lookup(title=title, artist=artist)
+    response = lookup.deezer()
+    assert response
 
-    release = Release(**params)
-    release_id = release.insert()
-    release = Release.get(release_id)
-    assert release != None
-    assert release.upc == params["upc"]
-    assert release.is_up == params["is_up"]
+def testGoogleLookup():
+    """ Testing Google Lookup"""
+    title = "You Forgot It In People"
+    artist = "Broken Social Scene"
+    lookup = Lookup(title=title, artist=artist)
+    response = lookup.google()
+    assert response
 
-def testReleasesQuery():
-    """ Testing querying releases """
-    upc = "840218148053"
-    params = {"is_up": False}
-    releases = Releases.query(params)
-    assert len(releases) >= 1
+# def clear_db():
+#     Releases.clear()
 
-    release = releases[0]
-    assert release.upc == upc
+# @with_setup(clear_db, None)
+# def testAReleaseInsert():
+#     """ Testing Inserting Release"""
+#     params = {
+#       "upc": "840218148053",
+#       "created_at": datetime.datetime.now(),
+#       "updated_at": datetime.datetime.now(),
+#       "is_up": False
+#     }
+
+#     release = Release(**params)
+#     release_id = release.insert()
+#     release = Release.get(release_id)
+#     assert release != None
+#     assert release.upc == params["upc"]
+#     assert release.is_up == params["is_up"]
+
+# def testReleasesQuery():
+#     """ Testing querying releases """
+#     upc = "840218148053"
+#     params = {"is_up": False}
+#     releases = Releases.query(params)
+#     assert len(releases) >= 1
+
+#     release = releases[0]
+#     assert release.upc == upc
