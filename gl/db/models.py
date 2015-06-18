@@ -14,6 +14,10 @@ class Release(ndb.Model):
     outlets = ndb.ComputedProperty(lambda self: self._get_outlet_names(),
         repeated=True)
 
+    emails = ndb.StringProperty(indexed=False, repeated=True)
+
+    do_notify = ndb.BooleanProperty(default=False)
+
 
     def _get_outlet_names(self):
         outlet_names = []
