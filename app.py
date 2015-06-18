@@ -54,10 +54,18 @@ def check_status():
         })
 
 
+@app.route("/album_status/<album_id>", methods=["GET"])
+def album_status(album_id):
+    """
+    Using album id get status of all outlets
+    the album has been distributed too
+    """
+    pass
+
 @app.route("/api/<distributor>")
 def check_is_live(distributor):
     """
-    Amazon not supported on this endpoint
+    Directly checks status
     """
     upc = request.args.get('upc')
     artist = request.args.get('artist')
