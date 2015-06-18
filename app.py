@@ -2,7 +2,10 @@ from flask import Flask, request, redirect
 
 import gl
 from gl.lookup import Lookup
+from gl.db import models
+
 import json
+import datetime
 
 app = Flask(__name__)
 
@@ -16,6 +19,11 @@ def dict_to_qs(_d):
         qs += '%s=%s' % (k, v)
     return qs
 
+def json_serial(obj):
+    if isinstance(obj, datetime.datetime):
+        serial = obj.isoformat()
+        return serial
+
 @app.route("/")
 def index():
     """
@@ -23,17 +31,36 @@ def index():
     """
     return app.send_static_file('index.html')
 
-@app.route("/add")
+@app.route("/add", methods=["POST"])
 def add():
     """
-    This will take a upc and email
-    and add it to the database for
+    This will accept:
+     - a upc
+     - album_id
+     - album title
+     - album artist
+     - a list of outlets
+     - a list of emails
+
+    and adds it to the database for
     the worker to check
 
     if a duplicateKeyError is raised
     return a error response
     """
-    pass
+
+    request_data = json.loads(request.data)
+    # TODO validate json
+
+    release = models.ReleaseModel.query_for_album_id(
+        request_data['album_id']).get()
+
+    if not release:
+        release = models.ReleaseModel.add_release_async(**request_data)\
+            .get_result()
+
+    return json.dumps(release.to_dict(), serial=json_serial)
+
 
 @app.route("/check_status", methods=["POST"])
 def check_status():
@@ -60,7 +87,16 @@ def album_status(album_id):
     Using album id get status of all outlets
     the album has been distributed too
     """
-    pass
+
+    release = models.ReleaseModel.query_for_album_id(
+        album_id).get()
+
+    if not release:
+        return json.dumps({
+            'error': 'Album not found'
+        })
+    return json.dumps(release.to_dict(), serial=json_serial)
+
 
 @app.route("/api/<distributor>")
 def check_is_live(distributor):
@@ -82,7 +118,6 @@ def check_is_live(distributor):
 
     results = Lookup.lookup_by_distributor(distributor, upc=upc, artist=artist,
         title=album_title)
-    print "Results:", results
 
     return json.dumps(results)
 
